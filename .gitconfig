@@ -63,8 +63,8 @@
 # Any GitHub repo with my username should be checked out r/w by default
 # http://rentzsch.tumblr.com/post/564806957/public-but-hackable-git-submodules
 
-[url "git@github.com:paulirish/"]
-  insteadOf = "git://github.com/paulirish/"
+[url "git@github.com:loadingnow/"]
+  insteadOf = "git://github.com/loadingnow/"
 [help]
 	autocorrect = 1
 
@@ -77,3 +77,7 @@
 [include]
   # For username / github token / etc
   path = ~/.gitconfig.local
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
