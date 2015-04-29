@@ -14,13 +14,10 @@ brew upgrade
 
 # git
 brew install git
-# git config
-git config --global user.name "loadingnow"
-git config --global user.email "loadingnowg@gmail.com"
 # git clone dotfiles
 mkdir projects
 cd projects
-git clone https://github.com/loadingnow/dotfiles.git
+git clone https://github.com/xxx/dotfiles.git
 
 
 # read migration.md where more migrationy tips are!
@@ -44,14 +41,14 @@ brew install node
 npm install -g n
 n stable
 
-andy 2015.04.21 stop
-
 # homebrew!
 # (google machines are funny so i have to do this. everyone else should use the regular thang)
 #mkdir $HOME/.homebrew && curl -L https://github.com/mxcl/homebrew/tarball/master | tar xz --strip 1 -C $HOME/.homebrew
 #export PATH=$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH
 # install all the things
 ./brew.sh
+#do PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+#MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 ./brew-cask.sh
 
 
@@ -80,13 +77,17 @@ chmod +x ~/code/z/z.sh
 
 
 # for the c alias (syntax highlighted cat)
-#sudo easy_install Pygments
+sudo easy_install Pygments
 
 
 # change to bash 4 (installed by homebrew)
-BASHPATH=$(brew --prefix)/bin/bash
-sudo echo $BASHPATH >> /etc/shells
-chsh -s $BASHPATH # will set for current user only.
+#BASHPATH=$(brew --prefix)/bin/bash
+#sudo echo $BASHPATH >> /etc/shells
+#chsh -s $BASHPATH # will set for current user only.
+sudo -s
+echo /usr/local/bin/bash >> /etc/shells
+chsh -s /usr/local/bin/bash
+#close and reopen terminal or iterm
 echo $BASH_VERSION # should be 4.x not the old 3.2.X
 
 # Later, confirm iterm settings aren't conflicting.
