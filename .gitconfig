@@ -10,18 +10,25 @@
 	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
 	# Merge GitHub pull request on top of the `master` branch
-	mpr = "!f() { \
-		if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
-			git fetch origin refs/pull/$1/head:pr/$1 && \
-			git rebase master pr/$1 && \
-			git checkout master && \
-			git merge pr/$1 && \
-			git branch -D pr/$1 && \
-			git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
-		fi \
-	}; f"
+	#mpr = "!f() { \
+	#	if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
+	#		git fetch origin refs/pull/$1/head:pr/$1 && \
+	#		git rebase master pr/$1 && \
+	#		git checkout master && \
+	#		git merge pr/$1 && \
+	#		git branch -D pr/$1 && \
+	#		git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
+	#	fi \
+	#}; f"
 
 
+	co = checkout
+	br = branch
+	ci = commit -am
+	st = status -s
+
+	unstage = reset HEAD --
+	last = log -1 HEAD
 
 [color]
 	ui = always
@@ -29,7 +36,7 @@
 [core]
 	excludesfile = ~/.gitignore
 	attributesfile = ~/.gitattributes
-	autocrlf = true
+	autocrlf = input
 [color "branch"]
 	current = yellow reverse
 	local = yellow
