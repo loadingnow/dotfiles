@@ -90,6 +90,21 @@ chsh -s /usr/local/bin/bash
 #close and reopen terminal or iterm
 echo $BASH_VERSION # should be 4.x not the old 3.2.X
 
+
+#zsh
+# git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+# backup 
+## cp ~/.zshrc ~/.zshrc.orig
+## cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+# need restart terminal
+# chsh -s /user/local/bin/zsh
+#do PATH="/usr/local/bin/zsh:$PATH"
+#symlink
+# ln -fs ~/projects/dotfiles/.zshrc ~/.zshrc
+
+
+
+
 # Later, confirm iterm settings aren't conflicting.
 
 

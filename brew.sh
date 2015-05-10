@@ -27,6 +27,10 @@ brew install bash
 brew tap homebrew/versions
 brew install homebrew/versions/bash-completion2
 
+#zsh
+brew install zsh
+brew install zsh-completions
+
 # generic colouriser  http://kassiopeia.juls.savba.sk/~garabik/software/grc/
 brew install grc
 

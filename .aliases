@@ -107,14 +107,15 @@ alias reload="exec $SHELL -l"
 
 # `cat` with beautiful colors. requires Pygments installed.
 # 							   sudo easy_install -U Pygments
-alias c='pygmentize -O style=monokai -f console256 -g'
+#alias c='pygmentize -O style=monokai -f console256 -g'
 
 # Trim new lines and copy to clipboard
-alias trimcopy="tr -d '\n' | pbcopy"
+#alias trimcopy="tr -d '\n' | pbcopy"
 
 # File size
 alias fs="stat -f \"%z bytes\""
 	
 # Winton Server
 alias 77="open smb://10.1.0.77"
+alias 77p="open smb://10.1.0.77/個人備份區"
 alias 59="open smb://10.1.0.59"
