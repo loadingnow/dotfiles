@@ -119,3 +119,5 @@ alias fs="stat -f \"%z bytes\""
 alias 77="open smb://10.1.0.77"
 alias 77p="open smb://10.1.0.77/個人備份區"
 alias 59="open smb://10.1.0.59"
+
+alias cls="clear"

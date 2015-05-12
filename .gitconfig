@@ -1,12 +1,13 @@
 [alias]
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
-	l = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit -20
-	lall = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit
-	lc2 = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --stat -C -2
-	lme = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --author=c39
-	lmec = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --author=c39 --stat -C
+	l = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit -20 --date=iso
+	lall = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=iso
+	lc2 = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --stat -C -2 --date=iso
+	lme = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --author=c39 --date=iso
+	lmec = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --author=c39 --stat -C  --date=iso
 
 	# View the current working tree status using the short format
+	s = status -s
 	st = status -s
 
 	# Show the diff between the latest commit and the current state
@@ -35,6 +36,7 @@
 	ci = commit
 	cm = commit -m
 	cam = commit -a -m
+	cma = commit -a -m
 	ca = !git add -A && git commit -av
 
 	co = checkout
@@ -43,13 +45,25 @@
 	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
 
 	br = branch
+	# set upstream 
+	#branch -u origin/my_branch
+
 	merged = branch --merged
 	unmerged = branch --no-merged
 
+	# reset
+	# remove files from index (tracking)
+  	#unstage = reset HEAD              
+  	# go back before last commit, with files in uncommitted state
+  	#uncommit = reset --soft HEAD^     
+
 	# Show verbose output about tags, branches or remotes
 	tags = tag -l
-	branches = branch -a
-	remotes = remote -v
+	#branches = branch -a
+	branches = branch -a -vv
+	brs = branch -a -vv
+	#remotes = remote -v
+	remotes = remote show origin
 
 	# Amend the currently staged files to the latest commit
 	amend = commit --amend --reuse-message=HEAD

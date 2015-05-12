@@ -11,6 +11,7 @@ fi;
 
 prompt_git() {
     local s='';
+    local sy='';
     local branchName='';
 
     # Check if the current directory is in a Git repository.
@@ -24,17 +25,17 @@ prompt_git() {
 
             # Check for uncommitted changes in the index.
             if ! $(git diff --quiet --ignore-submodules --cached); then
-                s+='+';
+                s+=' + '; #+
             fi;
 
             # Check for unstaged changes.
             if ! $(git diff-files --quiet --ignore-submodules --); then
-                s+='!';
+                s+=' M '; #!
             fi;
 
             # Check for untracked files.
             if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-                s+='?';
+                s+=' ?? '; 
             fi;
 
             # Check for stashed files.
@@ -51,9 +52,34 @@ prompt_git() {
             git rev-parse --short HEAD 2> /dev/null || \
             echo '(unknown)')";
 
-        [ -n "${s}" ] && s=" [${s}]";
+        #Check remote
+        count_lines() { echo "$1" | egrep -c "^$2" ; }
+        cmd_output=$(git rev-parse --abbrev-ref ${branchName}@{upstream} 2>&1 >/dev/null)
+        if [ `count_lines "$cmd_output" "fatal: No upstream"` == 1 ] ; then
+            has_remote_tracking=0;
+            sy+="no upstream: g br -u origin/my_branch";
+        else
+            remoteurl=$(git config --local --get remote.origin.url);
+            if [[ $remoteurl != *"https://github.com/"* ]]; then
+                $(git fetch);
+            fi;
+            LOCAL=$(git rev-parse @)
+            REMOTE=$(git rev-parse @{u})
+            BASE=$(git merge-base @ @{u})
+            if [ $LOCAL = $REMOTE ]; then
+                sy+='';
+            elif [ $LOCAL = $BASE ]; then
+                sy+=" ↓ ";
+            elif [ $REMOTE = $BASE ]; then
+                sy+=" ↑ ";
+            fi;
+        fi;
 
-        echo -e "${1}${branchName}${blue}${s}";
+
+        [ -n "${s}" ] && s=" [${s}]";
+        [ -n "${sy}" ] && sy=" [${sy}]";
+
+        echo -e "${1}${branchName}${red}${sy}${blue}${s}";
     else
         return;
     fi;
@@ -106,9 +132,9 @@ fi;
 # Set the terminal title to the current working directory.
 PS1="\[\033]0;\w\007\]";
 PS1+="\[${bold}\]\n"; # newline
-PS1+="\[${userStyle}\]\u"; # username
-PS1+="\[${white}\] at ";
-PS1+="\[${hostStyle}\]\h"; # host
+#PS1+="\[${userStyle}\]\u"; # username
+#PS1+="\[${white}\] at ";
+#PS1+="\[${hostStyle}\]\h"; # host
 PS1+="\[${white}\] in ";
 PS1+="\[${green}\]\w"; # working directory
 PS1+="\$(prompt_git \"${white} on ${violet}\")"; # Git repository details
