@@ -1,14 +1,176 @@
 [alias]
+	# rm
+	# 移除檔案(從  staged)
+	#rm xxx
+	# 移除檔案(從  staged) 但保留實際檔案
+	#rm —cached xxx
+
+	# Pull in remote changes for the current repository and all its submodules
+	p = !"git pull; git submodule foreach git pull origin master"
+	ph = push
+	pl = pull
+	sync = !git pull && git push
+
+	# push
+	# 上傳推送到遠端資料庫
+	# git push 遠端名稱  本地分支名稱:遠端分支名稱
+	#push origin master
+	# 刪除遠端分支
+	#push origin :xxxx	
+	# 第一次本地分支推送時 -u 也可以建立遠端分支並且建立關連
+	#push -u
+
+	# merge
+	# 合併遠端抓下的分支到當前分支
+	#git merge origin/xxxxx
+	# 合併分支
+	#git merge xxxxx	
+
+	# Commit 
+	# 提交變更
+	c = commit
+	# 提交變更
+	ci = commit
+	# 提交變更，並輸入訊息
+	cm = commit -m
+	# 先做 add all 再 commit
+	cam = commit -a -m
+	cma = commit -a -m
+	#ca = !git add -A && git commit -av
+
+	# Amend the currently staged files to the latest commit
+	# 更動最後一筆更新 : 提交後馬上再提交合併為一個提交
+	amend = commit --amend --reuse-message=HEAD
+
+	# stash
+	stashs = stash list
+	# 將目前分支的所有變更以時間為名稱存一份起來
+	snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+	# snapshot #快照
+	# stash list #列出快照
+	# stash@{0}: On master: Thu Feb 13 14:28:38 CST 2014
+	# stash@{1}: On master: Thu Feb 12 11:20:58 CST 2014
+	# stash apply stash@{1} #回復到2014/2/12所做的快照
+
+	# checkout
+	co = checkout
+	# 切換分支
+	#checkout xxx
+	# 建立並切換分支
+	#checkout -b 1440
+	# 從遠端分支建立分支
+	#checkout -b 1440 origin/1440
+	#或
+	#checkout —track origin/1440
+	# 取消本地更動
+	#checkout -- file
+
+	# Switch to a branch, creating it if necessary
+	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+	br = branch
+	# set upstream 
+	#branch -u origin/my_branch
+	# 查看哪些分支被併入到當前分支
+	merged = branch --merged
+	# 查看哪些分支沒有被併入
+	unmerged = branch --no-merged
+	# 建立分支 (但不會切換到該分支)
+	#branch 1440
+	# 刪除分支
+	#branch -d xxxx	
+	# 強制刪除分支 
+	#branch -d xxxx	
+	# 刪除遠端分支
+	#push origin :xxxx	
+	# 變更本地分支名稱
+	#branch -m <oldname> <newname>
+
+	# Show verbose output about tags, branches or remotes
+	tags = tag -l
+	#branches = branch -a
+	branches = branch -a -vv
+	brs = branch -a -vv
+	#remotes = remote -v
+	remotes = remote show origin
+
+	# View the current working tree status using the short format
+	#s = status
+	st = status
+	sts = status -s
+
+	# Add 之後不要了，可以下
+	#reset .
+	# commit 之後不要了，可以下
+	#reset HEAD^
+	# 將當前工作目錄的檔案狀態強制變更為指定的分支
+	#reset --hard origin/master
+	# remove files from index (tracking)
+  	#unstage = reset HEAD              
+  	# go back before last commit, with files in uncommitted state
+  	#uncommit = reset --soft HEAD^     
+
+	# rebase
+	# 千萬不要對已經 push 到 遠端儲存庫(remote repository) 的提交進行 rebase
+
+	# pull rebase
+	# 1.把本地 repo. 從上次 pull 之後的變更暫存起來 
+	# 2.回復到上次 pull 時的情況 
+	# 3.套用遠端的變更 
+	# 4.最後再套用剛暫存下來的本地變更
+	#pull --rebase origin master
+
+	# 如果本地端有修改到一半的作業，可以這樣做
+	#add .
+	#commit -m 'push to stash'
+	#pull --rebase origin master
+	# fix conflict (rebase)
+	# 是刪除最後一個 commit 但是保留最後 commit 修改的內容
+	#reset HEAD~1
+
+	# 一般 rebase
+	#checkout develop
+	#rebase feature-a
+	#rebase feature-b
+	# rebase 到分支的某個 commit 上
+	#rebase --onto <new base-commit> <current base-commit>
+	# 放棄 rebase
+	#rebase –abort 
+	# 解決衝除後，add 再繼續 rebase
+	#rebase –continue
+	# 回到 rebase 之前的狀態
+	#reset --hard ORIG_HEAD
+
+
+	# tag
+	# 列出標籤
+	#tag
+	# 過濾標籤
+	#tag -l ‘v1.4.2.*'
+	# 加標籤 (含附註) 建議用法
+	#tag -a v1.4 -m ‘xxxxx'
+	# 顯示標籤內容
+	#show v1.4
+	# 加標籤
+	#tag v1.4
+	# 追捕標籤(commit 的key 完整或可供識別的碼數即可)
+	#tag -a v1.4 9fcas
+	# 標籤預設不會推送到遠端，要下
+	#push origin my-tag
+	# 刪除本地標籤
+	#tag -d <tag_name>
+	# 刪除遠端標籤
+	#push <upstream> :refs/tags/<tag_name>
+	#push origin :refs/tags/my-lightweight-tag
+	# 利用標籤切換版本
+	#checkout -b <new_brance> <tag_name>
+
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
 	l = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit -20 --date=iso
 	lall = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=iso
 	lc2 = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --stat -C -2 --date=iso
 	lme = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --author=c39 --date=iso
 	lmec = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --author=c39 --stat -C  --date=iso
-
-	# View the current working tree status using the short format
-	s = status -s
-	st = status -s
 
 	# Show the diff between the latest commit and the current state
 	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
@@ -22,54 +184,13 @@
 	dcw = diff --color-words
 	df = diff --color --color-words --abbrev
 
-	# Pull in remote changes for the current repository and all its submodules
-	p = !"git pull; git submodule foreach git pull origin master"
-	ph = push
-	pl = pull
-	sync = !git pull && git push
+
+
+	#刪除 Git 資料庫的資料
+	#https://help.github.com/articles/remove-sensitive-data/
 
 	# Clone a repository including all submodules
 	#c = clone --recursive
-
-	# Commit all changes
-	c = commit
-	ci = commit
-	cm = commit -m
-	cam = commit -a -m
-	cma = commit -a -m
-	ca = !git add -A && git commit -av
-
-	co = checkout
-
-	# Switch to a branch, creating it if necessary
-	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
-
-	br = branch
-	# set upstream 
-	#branch -u origin/my_branch
-
-	merged = branch --merged
-	unmerged = branch --no-merged
-
-	# reset
-	# remove files from index (tracking)
-  	#unstage = reset HEAD              
-  	# go back before last commit, with files in uncommitted state
-  	#uncommit = reset --soft HEAD^     
-
-	# Show verbose output about tags, branches or remotes
-	tags = tag -l
-	#branches = branch -a
-	branches = branch -a -vv
-	brs = branch -a -vv
-	#remotes = remote -v
-	remotes = remote show origin
-
-	# Amend the currently staged files to the latest commit
-	amend = commit --amend --reuse-message=HEAD
-
-	# 將當前工作目錄的檔案狀態強制變更為指定的分支
-	# reset --hard origin/master
 
 	# Credit an author on the latest commit
 	#credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
